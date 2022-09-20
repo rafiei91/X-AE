@@ -94,6 +94,7 @@ def main():
 
         best_loss = 999999
         bestt_loss = 999999
+        check_epoch = args.epochs
 
         train_sampler = SubsetRandomSampler(train_idx)
         test_sampler = SubsetRandomSampler(test_idx)
@@ -134,27 +135,25 @@ def main():
             if test_loss < best_loss:
                 best_loss = test_loss
                 bestt_loss = train_loss
+                check_epoch = epoch
                 if best_loss < total_best_loss:
                     total_best_loss = best_loss
                     best_model = model
                     torch.save(best_model,'./saved_models/best.pt')
+
+            if epoch-check_epoch > 20:
+                break
                 
-            
             writer.flush()
             
-
             print("Fold:{} Epoch:{}/{} AVG Training Loss:{:.3f} AVG Test Loss:{:.3f}".format(fold + 1,
                                                                                                 epoch + 1,
                                                                                                 args.epochs,
                                                                                                 train_loss,
                                                                                                 test_loss))
 
-            
-
             writer.close()
             
-        
-
         knn_eval_out = ev.evaluate(best_model, train_loader, test_loader)
         history['train_loss'].append(bestt_loss)
         history['test_loss'].append(best_loss)
