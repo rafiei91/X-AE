@@ -57,7 +57,7 @@ class UnFlatten(nn.Module):
 
 
 class VAE_Xray(nn.Module, XrayBaseVAE):
-    def __init__(self, latent_size=500, dist_weight=1):
+    def __init__(self, latent_size=50, dist_weight=1):
         super(VAE_Xray, self).__init__()
 
         self.latent_size = latent_size
@@ -102,7 +102,7 @@ def xray_encoder(flatten_dim=(128, 58, 58)):
     )
     return encoder
 
-def xray_decoder(latent_dim=500, unflatten_dim=(128, 58, 58)):
+def xray_decoder(latent_dim=50, unflatten_dim=(128, 58, 58)):
     decoder = nn.Sequential(
 
         nn.Linear(latent_dim, 256),
