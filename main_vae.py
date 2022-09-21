@@ -49,6 +49,8 @@ parser.add_argument('--resume', default='', type=str, metavar='PATH', help='path
 parser.add_argument('--opt', default='A', type=str, metavar='N', help='A for Adam and S for SGD')
 parser.add_argument('--pretrain', default='True', type=str, metavar='N', help='If use pretrained model')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true', help='evaluate model on validation set')
+parser.add_argument('--latent_size', default=50, type=int, metavar='N', help='Size of latent features')
+parser.add_argument('--use_mse', dest='use_mse', action='store_true', help='mse(true) or cross entropy (false)')
 
 args = parser.parse_args()
 args.use_cuda = torch.cuda.is_available()
@@ -102,7 +104,7 @@ def main():
         train_loader = DataLoader(train_set, batch_size=args.batch_size, sampler=train_sampler)
         test_loader = DataLoader(test_set, batch_size=args.batch_size, sampler=test_sampler)
 
-        model = VAE_Xray(latent_size=50, dist_weight=1, use_mse = True)
+        model = VAE_Xray(latent_size=args.latent_size, dist_weight=1, use_mse=args.use_mse)
 
         model = torch.nn.DataParallel(model).cuda()
 
