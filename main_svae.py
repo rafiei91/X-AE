@@ -102,7 +102,7 @@ def main():
         train_loader = DataLoader(train_set, batch_size=args.batch_size, sampler=train_sampler)
         test_loader = DataLoader(test_set, batch_size=args.batch_size, sampler=test_sampler)
 
-        model = VAE_Xray(latent_size=50, dist_weight=1, use_mse = True)
+        model = VAE_Xray(dist_weight=1)
 
         model = torch.nn.DataParallel(model).cuda()
 
@@ -122,10 +122,10 @@ def main():
             adjust_learning_rate(optimizer, epoch)
 
             # train for one epoch
-            train_loss = vu.train_vae(train_loader, model, optimizer, epoch, log)
+            train_loss = vu.train(train_loader, model, optimizer, epoch, log)
              
             # evaluate on validation set
-            test_loss = vu.test_vae(test_loader, model, epoch, log)
+            test_loss = vu.test(test_loader, model, epoch, log)
 
             writer.add_scalars('train/test {} loss'.format(fold+1), {
                 'train loss': train_loss,

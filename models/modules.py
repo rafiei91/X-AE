@@ -57,13 +57,13 @@ class UnFlatten(nn.Module):
 
 
 class VAE_Xray(nn.Module, XrayBaseVAE):
-    def __init__(self, latent_size=50, dist_weight=1):
+    def __init__(self, latent_size=50, dist_weight=1, use_mse = False):
         super(VAE_Xray, self).__init__()
 
         self.latent_size = latent_size
         self.bce_dim = 244 * 244
         self.dist_weight = dist_weight
-        self.use_mse = False
+        self.use_mse = use_mse
 
         self.encoder = xray_encoder()
         self.decoder = xray_decoder(latent_dim=latent_size)

@@ -37,7 +37,7 @@ def get_dataset(seed=1, traindir='./'):
 
     return train_loader, test_loader
 
-def train(train_loader, model, optimizer, epoch, log):
+def train_vae(train_loader, model, optimizer, epoch, log):
 
     # switch to train mode
     model.train()
@@ -64,7 +64,7 @@ def train(train_loader, model, optimizer, epoch, log):
     return train_loss/count
 
 
-def test(test_loader, model, epoch, log):
+def test_vae(test_loader, model, epoch, log):
 
     # switch to evaluate mode
     model.eval()
