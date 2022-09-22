@@ -85,6 +85,60 @@ def test_vae(test_loader, model, epoch, log):
     return test_loss/count
 
 
+def train_rvae_supervised(train_loader, model, regularizer_gaussian, optimizer, epoch, log):
+
+    # switch to train mode
+    model.train()
+    train_loss = 0
+
+    #end = time.time()
+    count = 0
+    for input, target in train_loader:
+        count += len(input)
+
+        #input_var = torch.autograd.Variable(input)
+        input_var = input.cuda()
+
+        # compute output
+        recon_batch, mu, logvar = model(input_var)
+        loss = model.module.loss_supervised(recon_batch, input_var, mu, logvar, target)
+
+        if regularizer_gaussian > 0:
+            loss = loss + model.module.loss_gaussians()
+        
+        # compute gradient and do SGD step
+        optimizer.zero_grad()
+        loss.backward()
+        train_loss += loss.item()
+        optimizer.step()
+
+    return train_loss/count
+
+
+def test_rvae_supervised(test_loader, model, regularizer_gaussian, epoch, log):
+
+    # switch to evaluate mode
+    model.eval()
+    test_loss = 0
+
+    count = 0
+    for input, target in test_loader:
+        count += len(input)
+
+        #input_var = torch.autograd.Variable(input, volatile=True)
+        input_var = input.cuda()
+
+        # compute output
+        recon_batch, mu, logvar = model(input_var)
+        loss = model.module.loss_supervised(recon_batch, input_var, mu, logvar, target)
+
+        if regularizer_gaussian > 0:
+            loss = loss + model.module.loss_gaussians()
+
+        test_loss += loss.item()
+
+    return test_loss/count
+
 def save_checkpoint(state, is_best, filename, bestname):
     torch.save(state, filename)
     if is_best:
