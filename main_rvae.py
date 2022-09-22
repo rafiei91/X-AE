@@ -51,6 +51,10 @@ parser.add_argument('--pretrain', default='True', type=str, metavar='N', help='I
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true', help='evaluate model on validation set')
 parser.add_argument('--latent_size', default=50, type=int, metavar='N', help='Size of latent features')
 parser.add_argument('--use_mse', dest='use_mse', action='store_true', help='mse(true) or cross entropy (false)')
+parser.add_argument('--regularizer_gaussian', default=0, type=int, metavar='N', help='regularizer_gaussian')
+parser.add_argument('--gaussian_target_distance', default=5, type=float, metavar='N', help='gaussian_target_distance')
+
+
 
 args = parser.parse_args()
 args.use_cuda = torch.cuda.is_available()
@@ -124,7 +128,7 @@ def main():
             adjust_learning_rate(optimizer, epoch)
 
             # train for one epoch
-            regularizer_gaussian=0
+            regularizer_gaussian = args.regularizer_gaussian
             train_loss = vu.train_rvae_supervised(train_loader, model, regularizer_gaussian, optimizer, epoch, log)
              
             # evaluate on validation set
