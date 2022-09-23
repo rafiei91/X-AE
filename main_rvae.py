@@ -146,7 +146,7 @@ def main():
                 if best_loss < total_best_loss:
                     total_best_loss = best_loss
                     best_model = model
-                    torch.save(best_model,'/home/mehdi/X-AE-best/saved_models/best-vae.pt')
+                    torch.save(best_model,'/home/mehdi/X-AE-best/saved_models/best-rvae.pt')
 
             if epoch-check_epoch > 20:
                 break
