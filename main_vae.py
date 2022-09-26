@@ -86,9 +86,10 @@ def main():
 
     k = args.k
 
-    splits=KFold(n_splits=k, shuffle=False, random_state=None)
+    splits=KFold(n_splits=k, shuffle=True, random_state=seed)
     foldperf={}
     knn_eval=np.array([])
+    knn_eval1=np.array([])
 
     #torch.save(model, 'model_plane.pt')
 
@@ -162,6 +163,10 @@ def main():
         history['eval_knn'].append(knn_eval_out)
         knn_eval = np.append(knn_eval, knn_eval_out)
         print(knn_eval)
+
+        knn_eval_out = ev.evaluate(best_model, train_loader, test_loader)
+        knn_eval1 = np.append(knn_eval1, knn_eval_out)
+        print(knn_eval1)
 
         foldperf['fold{}'.format(fold+1)] = history 
 

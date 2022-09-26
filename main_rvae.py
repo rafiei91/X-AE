@@ -90,7 +90,7 @@ def main():
 
     k = args.k
 
-    splits=KFold(n_splits=k, shuffle=False, random_state=None)
+    splits=KFold(n_splits=k, shuffle=True, random_state=seed)
     foldperf={}
     knn_eval=np.array([])
 

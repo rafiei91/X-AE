@@ -3,4 +3,4 @@ PyTorch version : 1.4.0
 cuDNN   version : 7603
 Vision  version : 0.5.0
 Performance of 5 fold cross validation
-Average Training Loss: 30791.4 	 Average Test Loss: 45056.0 	 Average knn validation: 53.9 
+Average Training Loss: 34594.7 	 Average Test Loss: 45313.6 	 Average knn validation: 48.3 
